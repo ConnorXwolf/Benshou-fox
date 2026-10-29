@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>本手-棋力自現</title>
-<link rel="icon" type="image/png" href="benshou-icon.png">
-<link rel="apple-touch-icon" href="benshou-icon.png">
+<link rel="icon" type="image/png" href="assets/benshou-icon.png">
+<link rel="apple-touch-icon" href="assets/benshou-icon.png">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&display=swap">
 <link rel="stylesheet" href="fox-site.css">
@@ -70,16 +70,17 @@ body.drop::after{content:"放開以匯入棋譜（SGF / CSV）";position:fixed;i
 <div class="wrap">
 <nav class="nav">
 <button type="button" class="menu-btn" aria-label="選單" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
-<span class="nav-brand" style="display:flex;align-items:center;gap:8px;height:41px;border-radius:0px;font-size:24px"><img src="benshou-icon.png" alt="" width="28" height="28" style="display:block">本手-棋力自現</span>
+<span class="nav-brand" style="display:flex;align-items:center;gap:8px;height:41px;border-radius:0px;font-size:24px"><img src="assets/benshou-icon.png" alt="" width="28" height="28" style="display:block">本手-棋力自現</span>
 <div class="menu-panel" id="menu" hidden><a href="野狐棋力追蹤.html" aria-current="page"><b>01</b>首頁<span>棋力曲線</span></a><a href="取得UID.html"><b>02</b>取得 UID<span>用分享連結查詢</span></a><a href="比較.html"><b>03</b>棋手對決<span>兩人曲線與獎牌</span></a></div>
 <div class="nav-acct">
-<div class="acct-col"><input class="input" id="acct" value="" aria-label="野狐 UID 或暱稱" placeholder="野狐 UID 或暱稱"><label class="check"><input type="checkbox" id="beginner"><span class="box"></span><span><b>初學者模式</b><small>給只有 9 路或 13 路對弈經驗的初學者使用</small></span></label><span class="upd" id="updated">範例資料，非即時</span></div>
+<div class="acct-col"><input class="input" id="acct" value="" aria-label="野狐UID" placeholder="野狐UID"><label class="check"><input type="checkbox" id="beginner"><span class="box"></span><span><b>初學者模式</b><small>給只有 9 路或 13 路對弈經驗的初學者使用</small></span></label><span class="upd" id="updated">範例資料，非即時</span></div>
 <button type="button" class="btn btn-primary" id="fetchBtn">讀取棋譜</button>
 <input type="file" id="fileIn" multiple accept=".sgf,.csv,.txt" hidden>
 <button type="button" class="btn btn-secondary" id="sampleBtn" hidden>回到範例</button>
 </div>
 <span class="nav-sync" id="syncNote">目前顯示範例資料</span>
 </nav>
+<p class="foot" style="border-bottom:1px solid var(--color-divider);max-width:none;margin:0"><a href="取得UID.html" style="font-weight:700">點此查找UID</a></p>
 <p class="foot" style="border-bottom:1px solid var(--color-divider);max-width:none;margin:0"><b style="color:var(--color-text)">計分規則</b>　一般模式：只計算 19 路分先對弈。初學者模式：只計算 9 路與 13 路分先對弈，不計算 19 路對弈。</p>
 <div class="who"><span>棋手：<b id="who">範例棋手</b></span><button type="button" class="btn btn-ghost" id="cardBtn">分享圖卡</button></div>
 <section class="stats">
