@@ -367,6 +367,6 @@ reset.addEventListener('click', () => { try { localStorage.removeItem('foxTracke
 document.addEventListener('drop', e => doImport(e.dataTransfer.files));
 let rt; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(render, 60); }).observe($('.wrap'));
 render();
-try { const q = new URLSearchParams(location.search).get('uid'), u = (q && /^\d+$/.test(q)) ? q : localStorage.getItem('foxTracker.uid'); if (u) { $('#acct').value = u; doFetch(); } } catch (e) {}
+try { const q = new URLSearchParams(location.search).get('uid'); if (q && /^\d+$/.test(q)) { $('#acct').value = q; doFetch(); } } catch (e) {}
 })();
 
