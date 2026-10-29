@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>棋手對決 — 本手-棋力自現</title>
+<link rel="icon" type="image/png" href="assets/benshou-icon.png">
+<link rel="apple-touch-icon" href="assets/benshou-icon.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="fox-site.css">
+<style>
+:root{--gold:oklch(0.8 0.14 85);--gold-ink:oklch(0.38 0.08 70)}
+body,h1,h2,h3,.btn,.input,.nav-brand{font-family:"Archivo","Noto Sans TC",system-ui,sans-serif}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+[hidden]{display:none!important}.btn{white-space:nowrap}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1320px;margin:0 auto}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)}
+.head{padding:var(--space-8) var(--space-4) var(--space-6);border-bottom:2px solid var(--color-divider);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4)}
+.head h1{font-size:56px;margin:0 0 var(--space-3)}
+.head p{font-size:18px;line-height:1.65;max-width:40em;margin:0;text-wrap:pretty}
+.form{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;gap:var(--space-4);align-items:end;padding:var(--space-6) var(--space-4);border-bottom:2px solid var(--color-divider)}
+.form .field>label{display:flex;gap:var(--space-2);align-items:center}
+.dot{width:12px;height:12px;display:inline-block}
+.status{padding:var(--space-2) var(--space-4);font-size:13px;color:var(--color-neutral-700);border-bottom:1px solid var(--color-divider)}
+.status.err{color:var(--color-accent-700)}
+.vs{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);border-bottom:2px solid var(--color-divider)}
+.side{padding:var(--space-6) var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);min-width:0}
+.side+.vs-mid{border-left:2px solid var(--color-divider)}
+.vs-mid{display:grid;place-items:center;padding:0 var(--space-6);border-right:2px solid var(--color-divider);font-family:var(--font-heading);font-weight:800;font-size:32px;color:var(--color-neutral-500)}
+.side-name{font-family:var(--font-heading);font-weight:800;font-size:32px;line-height:1.15;overflow-wrap:anywhere;display:flex;align-items:center;gap:var(--space-2)}
+.side-score{font-family:var(--font-heading);font-weight:800;font-size:56px;line-height:1;letter-spacing:-.02em}
+.side-score small{font-size:18px;font-weight:600;color:var(--color-neutral-700);margin-left:var(--space-2)}
+.side-sub{font-size:13px;color:var(--color-neutral-700)}
+.medals{display:flex;gap:6px;flex-wrap:wrap;min-height:28px;align-items:center}
+.medal{width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--gold-ink);display:inline-grid;place-items:center;font-size:12px;font-weight:800;box-shadow:inset 0 0 0 2px color-mix(in oklch,var(--gold) 70%,black)}
+.medal.lg{width:40px;height:40px;font-size:15px}
+.sec-head{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap;padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider)}
+.sec-head h2{font-size:17px;margin:0;margin-right:auto;display:flex;gap:var(--space-2)}
+.sec-head h2 span{color:var(--color-accent)}
+.block{border-bottom:2px solid var(--color-divider)}
+.chart{padding:var(--space-4)}
+.chart svg{display:block;width:100%;overflow:visible}
+.chart svg text{font-family:"Archivo","Noto Sans TC",system-ui,sans-serif;fill:var(--color-neutral-700);font-size:11px}
+.legend{display:flex;gap:var(--space-4);flex-wrap:wrap;font-size:12px;color:var(--color-neutral-700);padding:0 var(--space-4) var(--space-3)}
+.legend i{display:inline-block;width:18px;height:3px;margin-right:6px;vertical-align:3px}
+.odds{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4);padding:var(--space-4);align-items:center}
+.odds-bar{display:flex;height:28px;font-size:13px;font-weight:600}
+.odds-bar div{display:flex;align-items:center;padding:0 var(--space-2);min-width:0;white-space:nowrap;overflow:hidden}
+.note{font-size:14px;line-height:1.6;padding:0 var(--space-4) var(--space-4);margin:0;max-width:60em}
+.cats{display:grid}
+.cat{display:grid;grid-template-columns:48px minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:var(--space-3);align-items:center;padding:var(--space-3) var(--space-4);border-bottom:1px solid var(--color-divider);min-height:72px}
+.cat-n{font-family:var(--font-heading);font-weight:800;font-size:22px;color:var(--color-accent)}
+.cat h3{font-size:16px;margin:0}
+.cat p{font-size:12px;margin:2px 0 0;color:var(--color-neutral-700)}
+.val{display:flex;align-items:center;gap:var(--space-2);font-family:var(--font-heading);font-weight:800;font-size:24px;font-variant-numeric:tabular-nums}
+.val small{font-size:12px;font-weight:400;color:var(--color-neutral-700)}
+.val.lose{color:var(--color-neutral-600)}
+.cat.locked .val{color:var(--color-neutral-400)}
+.cat.locked h3{color:var(--color-neutral-600)}
+.cat.now{background:color-mix(in srgb,var(--color-accent) 6%,transparent)}
+.cat-head{display:grid;grid-template-columns:48px minmax(0,2fr) minmax(0,1fr) minmax(0,1fr);gap:var(--space-3);padding:var(--space-2) var(--space-4);border-bottom:2px solid var(--color-divider)}
+.actions{display:flex;gap:var(--space-3);padding:var(--space-4);flex-wrap:wrap;align-items:center}
+.lbl-q{display:flex;align-items:center;gap:6px}.q{width:18px;height:18px;padding:0;border:1.5px solid currentColor;border-radius:50%;background:transparent;color:inherit;font:600 11px/1 "Archivo",sans-serif;cursor:help;display:inline-grid;place-items:center}.q:hover,.q:focus-visible{background:var(--color-bg);color:var(--color-accent-700);border-color:var(--color-bg)}
+.tip{position:fixed;z-index:40;pointer-events:none;background:var(--color-text);color:var(--color-bg);font-size:12px;line-height:1.6;padding:8px 12px;opacity:0;transition:opacity .1s;max-width:340px}.tip.on{opacity:1}
+.vgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-6)}.vgrid>div{display:flex;flex-direction:column;gap:var(--space-2);min-width:0}.vgrid>div+div{border-left:2px solid color-mix(in srgb,var(--color-bg) 50%,transparent);padding-left:var(--space-6)}.verdict .vgrid h2{font-size:44px}.verdict .vgrid p{font-size:15px}
+.side .tag{align-self:flex-start}
+.verdict{background:var(--color-accent-700);color:var(--color-bg);padding:var(--space-8) var(--space-4);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4)}
+.verdict .lbl{color:var(--color-bg)}
+.verdict h2{font-size:64px;line-height:1.05;margin:0 0 var(--space-3);display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.verdict p{font-size:18px;line-height:1.6;margin:0;max-width:40em}
+.table td.num,.table th.num{text-align:right}
+.table tr.total td{font-weight:800;border-bottom:2px solid var(--color-divider);font-size:16px;background:var(--color-accent-100)}
+.gold-chip{display:inline-block;padding:4px 12px;background:var(--color-neutral-300);color:var(--color-text);font-weight:800}
+.gold-chip.win{background:var(--color-accent-700);color:var(--color-bg)}
+.warn-chip{display:inline-block;margin-left:8px;padding:2px 8px;background:var(--color-text);color:var(--color-bg);font-size:12px;font-weight:800;letter-spacing:.02em;white-space:nowrap}
+.formula{padding:var(--space-4);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4);border-bottom:2px solid var(--color-divider)}
+.disc{font-size:12px;color:var(--color-neutral-700);padding:var(--space-3) var(--space-4) var(--space-6);margin:0}
+@media (max-width:900px){.vgrid{grid-template-columns:minmax(0,1fr)}.vgrid>div+div{border-left:0;padding-left:0;border-top:2px solid color-mix(in srgb,var(--color-bg) 50%,transparent);padding-top:var(--space-4)}.head,.odds,.verdict,.formula{grid-template-columns:minmax(0,1fr)}.head h1{font-size:40px}.form{grid-template-columns:minmax(0,1fr)}.cat,.cat-head{grid-template-columns:32px minmax(0,1.4fr) minmax(0,1fr) minmax(0,1fr)}.side-score{font-size:40px}.side-name{font-size:24px}.vs-mid{padding:0 var(--space-3);font-size:20px}.verdict h2{font-size:40px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav">
+<button type="button" class="menu-btn" aria-label="選單" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+<div class="menu-panel" id="menu" hidden><a href="野狐棋力追蹤.html"><b>01</b>首頁<span>棋力曲線</span></a><a href="取得UID.html"><b>02</b>取得 UID<span>用分享連結查詢</span></a><a href="比較.html" aria-current="page"><b>03</b>棋手對決<span>兩人曲線與獎牌</span></a></div>
+<span class="nav-brand" style="display:flex;align-items:center;gap:8px;height:41px;font-size:24px"><img src="assets/benshou-icon.png" alt="" width="28" height="28" style="display:block">本手-棋力自現</span>
+</nav>
+<section class="head">
+<span class="lbl">03 · 棋手對決</span>
+<div>
+<h1>棋手對決</h1>
+<p>輸入兩位棋手，疊加兩人的分數曲線，逐項比較 7 個統計數據，每項勝出者拿一面金牌（平手或一方資料不足則不發牌）。最後列出金牌總數的勝者，以及依兩人 Elo 分數與波動算出「誰較強」的機率。</p>
+</div>
+</section>
+<section class="form">
+<div class="field"><label for="ia"><i class="dot" style="background:var(--color-accent)"></i>棋手 A</label><input class="input" id="ia" placeholder="野狐 UID"></div>
+<div class="field"><label for="ib"><i class="dot" style="background:var(--color-text)"></i>棋手 B</label><input class="input" id="ib" placeholder="野狐 UID"></div>
+<button type="button" class="btn btn-primary" id="go">開始對決</button>
+</section>
+<div class="status" id="status">目前只能用數字 UID 查詢；不知道 UID 可到「<a href="取得UID.html">取得 UID</a>」用分享連結查出。</div>
+<div id="out" hidden>
+<section class="vs">
+<div class="side" id="sideA"></div>
+<div class="vs-mid">VS</div>
+<div class="side" id="sideB"></div>
+</section>
+<section class="block">
+<div class="sec-head"><h2><span>01</span>分數曲線</h2><span class="lbl">Elo 分數</span></div>
+<div class="chart" id="cmp"></div>
+<div class="legend" id="cmpLegend"></div>
+</section>
+<section class="block">
+<div class="odds"><span class="lbl">依目前分數的預期勝率</span><div class="odds-bar" id="odds"></div></div>
+<p class="note" id="h2h"></p>
+</section>
+<section class="block">
+<div class="sec-head"><h2><span>02</span>逐項比較</h2><span class="lbl" id="progress"></span></div>
+<div class="cat-head lbl"><span></span><span>項目</span><span id="hA">A</span><span id="hB">B</span></div>
+<div class="cats" id="cats"></div>
+<div class="actions"><button type="button" class="btn btn-primary" id="next">揭曉第 1 項</button><button type="button" class="btn btn-secondary" id="all">全部揭曉</button></div>
+</section>
+<div id="final" hidden>
+<section class="verdict" id="verdict"></section>
+<section class="formula">
+<span class="lbl">含金量分數（參考）</span>
+<div>
+<p class="note" id="goldNote" style="padding:0 0 var(--space-3);font-weight:600"></p>
+<table class="table" id="ftab"></table>
+<p class="note" style="padding:var(--space-3) 0 0">保守分數取 Elo 分數減去近 30 盤的分數波動 σ（標準差），起伏大、不穩定的分數會被打折。對手強度加權為（平均對手分數 − 自己分數）× 0.25：常找比自己強的對手下會加分，常下比自己弱的會扣分。打低比例是對上比自己低 2 段以上對手的盤數占比，每 10% 扣 4 分。金牌數只用來呈現各項表現，不計入含金量。</p>
+</div>
+</section>
+</div>
+</div>
+<p class="disc">本站非野狐圍棋官方網站，與野狐圍棋無隸屬關係。對局資料取自野狐公開棋譜，分數為本站自行計算，並非野狐正式段位。</p>
+</div>
+<script src="fox-menu.js"></script>
+<script src="fox-import.js"></script>
+<script src="fox-engine.js"></script>
+<script src="fox-compare.js"></script>
+</body>
+</html>

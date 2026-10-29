@@ -1,0 +1,13 @@
+.nav{position:relative}
+.menu-btn{width:36px;height:36px;flex:none;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:0 9px;border:1px solid var(--color-divider);background:transparent;cursor:pointer;color:var(--color-text)}
+.menu-btn span{display:block;height:2px;background:currentColor}
+.menu-btn:hover{background:color-mix(in srgb,var(--color-text) 7%,transparent)}
+.menu-btn[aria-expanded="true"]{background:var(--color-text);color:var(--color-bg);border-color:var(--color-text)}
+.menu-panel{position:absolute;top:calc(100% + 2px);left:var(--space-4);z-index:30;min-width:260px;background:var(--color-bg);border:2px solid var(--color-text);box-shadow:var(--shadow-lg);display:flex;flex-direction:column}
+.menu-panel[hidden]{display:none}
+.nav .menu-panel a{display:flex;align-items:baseline;gap:var(--space-3);padding:14px var(--space-4);border-bottom:1px solid var(--color-divider);font-size:15px;font-weight:600;color:var(--color-text);text-decoration:none}
+.nav .menu-panel a:last-child{border-bottom:0}
+.nav .menu-panel a span{font-size:11px;font-weight:400;color:var(--color-neutral-700)}
+.nav .menu-panel a:hover{background:color-mix(in srgb,var(--color-text) 6%,transparent)}
+.nav .menu-panel a[aria-current="page"]{color:var(--color-accent-700)}
+.nav .menu-panel a b{font-weight:800;color:var(--color-accent);width:20px}

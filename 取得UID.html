@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>取得 UID — 本手-棋力自現</title>
+<link rel="icon" type="image/png" href="assets/benshou-icon.png">
+<link rel="apple-touch-icon" href="assets/benshou-icon.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="fox-site.css">
+<style>
+body,h1,h2,h3,.btn,.input,.nav-brand{font-family:"Archivo","Noto Sans TC",system-ui,sans-serif}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+[hidden]{display:none!important}.btn{white-space:nowrap}
+.wrap{max-width:1320px;margin:0 auto}
+.lbl{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--color-neutral-700)}
+.head{padding:var(--space-8) var(--space-4) var(--space-6);border-bottom:2px solid var(--color-divider);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4)}
+.head h1{font-size:56px;margin:0 0 var(--space-3)}
+.head p{font-size:18px;line-height:1.65;max-width:40em;margin:0;text-wrap:pretty}
+.app{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4);padding:var(--space-6) var(--space-4);border-bottom:2px solid var(--color-divider)}
+.app-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--space-6);align-items:start}
+.app-text{display:flex;flex-direction:column;gap:var(--space-3)}.app-text h2,.app h2{font-size:28px;margin:0}.app-text p{font-size:15px;line-height:1.65;margin:0;color:var(--color-neutral-800);max-width:32em}
+.app-shot img{width:100%;max-width:480px;border:2px solid var(--color-text)}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:2px solid var(--color-divider)}
+.step{padding:var(--space-4);border-right:2px solid var(--color-divider);display:flex;flex-direction:column;gap:var(--space-2)}
+.step:last-child{border-right:0}
+.step-n{font-family:var(--font-heading);font-weight:800;font-size:40px;line-height:1;color:var(--color-accent)}
+.step h3{font-size:18px;margin:0}
+.step p{font-size:14px;line-height:1.6;margin:0;color:var(--color-neutral-800)}
+.form{padding:var(--space-6) var(--space-4);border-bottom:2px solid var(--color-divider);display:grid;grid-template-columns:minmax(0,1fr) minmax(0,3fr);gap:var(--space-4)}
+.form-main{display:flex;flex-direction:column;gap:var(--space-3);max-width:820px}
+.form textarea.input{min-height:96px;font-size:14px;line-height:1.5}
+.form-row{display:flex;gap:var(--space-3);align-items:center;flex-wrap:wrap}
+.status{font-size:14px;color:var(--color-neutral-700)}
+.status.err{color:var(--color-accent-700)}
+.result{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-bottom:2px solid var(--color-divider)}
+.player{padding:var(--space-6) var(--space-4);border-right:2px solid var(--color-divider);display:flex;flex-direction:column;gap:var(--space-2);min-width:0}
+.player:last-child{border-right:0}
+.player-name{font-family:var(--font-heading);font-weight:800;font-size:28px;line-height:1.15;overflow-wrap:anywhere}
+.player-name small{font-size:16px;font-weight:600;color:var(--color-neutral-700);margin-left:var(--space-2)}
+.uid{font-family:var(--font-heading);font-weight:800;font-size:44px;line-height:1;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.player .form-row{margin-top:var(--space-3)}
+.game{padding:var(--space-3) var(--space-4);font-size:13px;color:var(--color-neutral-700);border-bottom:1px solid var(--color-divider)}
+.foot{padding:var(--space-4);font-size:12px;color:var(--color-neutral-700);max-width:70em;margin:0}
+@media (max-width:900px){.app,.app-body{grid-template-columns:minmax(0,1fr)}.head,.form{grid-template-columns:minmax(0,1fr)}.head h1{font-size:40px}.cols,.result{grid-template-columns:minmax(0,1fr)}.step,.player{border-right:0;border-bottom:2px solid var(--color-divider)}.step:last-child,.player:last-child{border-bottom:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="nav">
+<button type="button" class="menu-btn" aria-label="選單" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+<div class="menu-panel" id="menu" hidden><a href="野狐棋力追蹤.html"><b>01</b>首頁<span>棋力曲線</span></a><a href="取得UID.html" aria-current="page"><b>02</b>取得 UID<span>用分享連結查詢</span></a><a href="比較.html"><b>03</b>棋手對決<span>兩人曲線與獎牌</span></a></div>
+<span class="nav-brand" style="display:flex;align-items:center;gap:8px;height:41px;font-size:24px"><img src="assets/benshou-icon.png" alt="" width="28" height="28" style="display:block">本手-棋力自現</span>
+</nav>
+<section class="head">
+<span class="lbl">02 · 取得 UID</span>
+<div>
+<h1>取得你的野狐 UID</h1>
+<p>首頁需要數字 UID 才能讀取棋譜。有兩種方式可以找到：直接在野狐 App 的個人頁查看，或貼上一盤棋的分享連結查出對局雙方的 UID。</p>
+</div>
+</section>
+<section class="app">
+<span class="lbl">方法一 · 個人頁</span>
+<div class="app-body">
+<div class="app-text">
+<h2>在野狐 App 查看</h2>
+<p>打開野狐 App，進入自己的個人介面。頭像旁、暱稱下方「ID:」後面的數字串，就是你的 UID。</p>
+<p>把這串數字輸入下方欄位，或直接貼到首頁的查詢欄即可。</p>
+<div class="form-row"><input class="input" id="uidIn" inputmode="numeric" placeholder="例如 532707745" aria-label="野狐 UID" style="max-width:240px"><button type="button" class="btn btn-primary" id="uidGo">讀取棋譜</button></div>
+</div>
+<figure class="app-shot"><img src="assets/fox-uid-profile.png" alt="野狐 App 個人頁，頭像旁的 ID 數字串即為 UID"><figcaption>野狐 App 個人頁：紅框處「ID:」後的數字即為 UID</figcaption></figure>
+</div>
+</section>
+<section class="app" style="border-bottom:1px solid var(--color-divider)">
+<span class="lbl">方法二 · 分享連結</span>
+<div><h2 style="margin:0">用棋局分享連結查詢</h2><p style="margin:var(--space-2) 0 0;font-size:15px;color:var(--color-neutral-800)">適合查自己或對手的 UID。</p></div>
+</section>
+<section class="cols">
+<div class="step"><span class="step-n">1</span><h3>打開一盤自己的棋</h3><p>在野狐 App 或電腦版的棋譜列表裡，點開任何一盤你下過的對局。最近下的棋最容易查到。</p></div>
+<div class="step"><span class="step-n">2</span><h3>分享並複製連結</h3><p>點「分享」，選擇複製連結。整段文字直接貼上也可以，網址會自動取出。</p></div>
+<div class="step"><span class="step-n">3</span><h3>選出你是哪一方</h3><p>查詢後會列出黑方和白方。點自己那一方的「讀取棋譜」，就會回到首頁開始分析。</p></div>
+</section>
+<section class="form">
+<span class="lbl">分享連結</span>
+<div class="form-main">
+<textarea class="input" id="link" placeholder="【野狐圍棋】網棋棋譜 | 黑方[段位] VS 白方[段位]&#10;http://h5.foxwq.com/yehunewshare/?chessid=…" aria-label="野狐分享連結"></textarea>
+<div class="form-row"><button type="button" class="btn btn-primary" id="go">查詢 UID</button><span class="status" id="status"></span></div>
+</div>
+</section>
+<div id="out" hidden>
+<div class="game" id="game"></div>
+<section class="result" id="players"></section>
+</div>
+<p class="foot">查詢方式：從連結取出棋局編號，在野狐的公開對局列表中找到這一盤，讀出雙方帳號。只處理公開棋局；設為不公開或太久以前的棋可能查不到，請換一盤最近的棋再試。</p>
+<p class="foot" style="border-top:2px solid var(--color-divider)">本站非野狐圍棋官方網站，與野狐圍棋無隸屬關係。</p>
+</div>
+<script src="fox-menu.js"></script>
+<script src="fox-uid.js"></script>
+</body>
+</html>
