@@ -121,7 +121,7 @@ function summary(G) {
     : gap < -40 ? `比 ${rk(fox)}的換算分數低 ${Math.round(-gap)} 分，目前段位對你來說偏高。` : `和 ${rk(fox)}的換算分數大致相符。`;
   const bs = META.bs, many = n => bs && bs.all && n >= 20 && n / bs.all >= 0.2;
   const small = gap < -100 && bs && ((fox <= 2 && many(bs[9] + bs[13])) || (fox <= 5 && many(bs[13])));
-  const warn = Math.abs(gap) > 100 ? `<span class="tag tag-accent" style="font-size:13px;margin-right:8px">${small ? '與野狐段位差距大，可能因非19路對局樣本偏差' : '與野狐段位差距大，可能因公開對局樣本偏差'}</span>` : '';
+  const warn = Math.abs(gap) > 100 ? `<span class="tag tag-accent" style="font-size:13px;margin-right:8px;width:313px;height:18px">${small ? '與野狐段位差距大，可能因非19路對局樣本偏差' : '與野狐段位差距大，可能因公開對局樣本偏差'}</span>` : '';
   $('#explainWarn').innerHTML = warn;
   $('#explain').innerHTML = (elo ? `你的 Elo 分數是 <b>${r}</b>，大約相當於野狐 <b>${eqL}</b>。` : `你的分數是 <b>${r}</b>，有 95% 的把握真實實力落在 ${r - ci} 到 ${r + ci} 之間，大約相當於野狐 <b>${eqL}</b>。`) + verdict +
     `近 14 天${d14 >= 0 ? '上升' : '下降'} ${Math.abs(Math.round(d14))} 分。以現在的分數，對 ${rk(fox)}預期勝率約 ${pct(eSame)}，對 ${rk(fox + 1)}約 ${pct(eUp)}。`;
