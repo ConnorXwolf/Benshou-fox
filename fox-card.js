@@ -42,9 +42,10 @@ async function draw() {
   c.save(); c.beginPath(); c.rect(xL, cy, xR - xL, cH); c.clip();
   if (!elo) { c.beginPath(); pts.forEach((g, i) => c[i ? 'lineTo' : 'moveTo'](X(g.t), Y(g.r + 2 * g.rd))); for (let i = pts.length - 1; i >= 0; i--) c.lineTo(X(pts[i].t), Y(pts[i].r - 2 * pts[i].rd)); c.closePath(); c.fillStyle = band; c.globalAlpha = .8; c.fill(); c.globalAlpha = 1; }
   c.beginPath(); pts.forEach((g, i) => { const x = X(g.t), y = Y(1400 + 100 * g.fox); if (!i) c.moveTo(x, y); else c.lineTo(x, y); if (g.foxAfter !== g.fox) c.lineTo(x, Y(1400 + 100 * g.foxAfter)); });
-  c.strokeStyle = ink; c.lineWidth = 3; c.stroke();
+  c.strokeStyle = ink; c.lineWidth = 7; c.stroke();
   c.beginPath(); pts.forEach((g, i) => c[i ? 'lineTo' : 'moveTo'](X(g.t), Y(SC(g)))); c.strokeStyle = acc; c.lineWidth = 4; c.lineJoin = 'round'; c.stroke();
   c.restore();
+  { const lp = pts[pts.length - 1], ly = Y(1400 + 100 * lp.foxAfter); c.save(); c.fillStyle = ink; c.font = F(600, 18); c.textAlign = 'right'; c.textBaseline = 'bottom'; c.fillText('野狐段位', xR, ly - 8); c.restore(); }
   c.fillStyle = ink; c.fillRect(xL, cy + cH, xR - xL, 3);
   c.fillStyle = mute; c.font = F(400, 22);
   c.fillText(`${pts.length} 盤 · 紅線為${elo ? ' Elo' : ' Glicko-2'} 分數${elo ? '' : '，淺紅為 95% 區間'}，黑線為野狐段位`, xL, cy + cH + 36);
