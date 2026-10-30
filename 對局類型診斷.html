@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>對局類型診斷 — 本手-棋力自現</title>
+<link rel="icon" type="image/png" href="benshou-icon.png">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="fox-site.css">
+<style>a{color:var(--color-text)}a:hover{color:var(--color-accent)}pre{white-space:pre-wrap;word-break:break-all;font-size:13px;background:var(--color-surface-2,#f4f4f4);padding:16px;margin:0}</style>
+</head>
+<body>
+<div class="wrap" style="padding:24px;display:flex;flex-direction:column;gap:16px;max-width:900px">
+<h1 style="margin:0;font-size:28px">對局類型診斷</h1>
+<p style="margin:0">輸入下這兩盤棋的帳號（novicc）的野狐 UID，按「比對」。完成後把下方結果全部複製給我。</p>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<input class="input" id="uid" placeholder="野狐UID" style="flex:1;min-width:180px">
+<button class="btn btn-primary" id="go" type="button">比對</button>
+</div>
+<p id="st" style="margin:0"></p>
+<pre id="out"></pre>
+</div>
+<script>
+const IDS = { '友誼賽': '1793192584010001596', '升降級': '1748676493030012154' };
+const API = 'https://h5.foxwq.com/yehuDiamond/chessbook_local/YHWQFetchChessList';
+const st = t => document.getElementById('st').textContent = t;
+document.getElementById('go').onclick = async () => {
+  const uid = document.getElementById('uid').value.trim(); if (!/^\d+$/.test(uid)) return st('請輸入數字 UID');
+  const found = {}, seen = new Set(); let last = '', n = 0;
+  try {
+    for (let p = 0; p < 60 && Object.keys(found).length < 2; p++) {
+      const j = await (await fetch(`${API}?srcuid=0&dstuid=${uid}&type=1&lastcode=0&lastCode=${last}&searchkey=&uin=${uid}`)).json();
+      const list = (j.chesslist || []).filter(c => !seen.has(String(c.chessid))); if (!list.length) break;
+      list.forEach(c => { seen.add(String(c.chessid)); n++; for (const k in IDS) if (String(c.chessid) === IDS[k]) found[k] = c; });
+      last = list[list.length - 1].chessid; st(`已讀取 ${n} 盤…`);
+    }
+  } catch (e) { return st('讀取失敗：' + e.message); }
+  const a = found['友誼賽'], b = found['升降級'];
+  if (!a || !b) return st(`讀取 ${n} 盤，未找到${!a ? '友誼賽' : ''}${!a && !b ? '與' : ''}${!b ? '升降級' : ''}那盤。`);
+  const keys = [...new Set([...Object.keys(a), ...Object.keys(b)])];
+  const diff = keys.filter(k => JSON.stringify(a[k]) !== JSON.stringify(b[k])).map(k => `${k}: 友誼=${JSON.stringify(a[k])} ｜ 升降=${JSON.stringify(b[k])}`);
+  st('完成，請複製以下全部內容。');
+  document.getElementById('out').textContent = '【不同欄位】\n' + diff.join('\n') + '\n\n【友誼賽原始】\n' + JSON.stringify(a) + '\n\n【升降級原始】\n' + JSON.stringify(b);
+};
+</script>
+</body>
+</html>
