@@ -81,7 +81,7 @@ body.drop::after{content:"放開以匯入棋譜（SGF / CSV）";position:fixed;i
 <span class="nav-sync" id="syncNote">目前顯示範例資料</span>
 </nav>
 <p class="foot" style="border-bottom:1px solid var(--color-divider);max-width:none;margin:0"><a href="取得UID.html" style="font-weight:700">點此查找UID</a></p>
-<p class="foot" style="border-bottom:1px solid var(--color-divider);max-width:none;margin:0"><b style="color:var(--color-text)">計分規則</b>　一般模式：只計算 19 路分先對弈。初學者模式：只計算 9 路與 13 路分先對弈，不計算 19 路對弈。</p>
+<p class="foot" style="border-bottom:1px solid var(--color-divider);max-width:none;margin:0"><b style="color:var(--color-text)">計分規則</b>　只計算升降級對局，不含友誼賽。一般模式：只計算 19 路分先對弈。初學者模式：只計算 9 路與 13 路分先對弈，不計算 19 路對弈。</p>
 <div class="who"><span>棋手：<b id="who">範例棋手</b></span><button type="button" class="btn btn-ghost" id="cardBtn">分享圖卡</button></div>
 <section class="stats">
 <div class="stat"><span class="lbl lbl-q"><span id="sLbl">Elo 分數</span><button type="button" class="q" aria-label="什麼是 Elo 分數" data-tip="&lt;b&gt;Elo 分數&lt;/b&gt;&lt;br&gt;依每盤勝負與對手段位計算的連續分數。贏了比自己強的對手加得多、輸給比自己弱的對手扣得多。每盤最多加減 K 分：前 30 盤 K = 40，讓分數快速就位；之後 K = 20，分數較穩定。&lt;br&gt;&lt;br&gt;分數與野狐段位的換算：1 段 = 1500 分，每差一段 100 分。差 100 分時，強的一方預期勝率約 64%。">?</button></span><div class="stat-value num"><span id="sR">—</span><small id="sRD"></small></div><span class="stat-sub" id="sRsub"></span><span id="sNeg"></span></div>

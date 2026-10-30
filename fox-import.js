@@ -115,7 +115,7 @@ async function fetchFox(input, onProgress, maxGames = 1000, opts = {}) {
     const me = String(c.blackuid) === uid ? 'B' : String(c.whiteuid) === uid ? 'W' : null;
     if (me) { bs.all++; if (bs[c.boardsize] != null) bs[c.boardsize]++; }
     if (me && !player) player = me === 'B' ? c.blacknick : c.whitenick;
-    if (!me || !(c.winner === 1 || c.winner === 2) || c.handicap > 0 || !okBoard(c)) { skipped++; return; }
+    if (!me || c.gametype !== 1 || !(c.winner === 1 || c.winner === 2) || c.handicap > 0 || !okBoard(c)) { skipped++; return; }
     const t = +c.gamestarttime * 1000 || new Date(c.starttime.replace(' ', 'T')).getTime();
     const myDan = me === 'B' ? c.blackdan : c.whitedan, opDan = me === 'B' ? c.whitedan : c.blackdan;
     games.push({ t, oppDan: foxDan(opDan, false), color: me, win: (c.winner === 1) === (me === 'B'), fox: foxDan(myDan, false), tc: tcByPace(c), id: c.chessid, end: c.point >= 0 ? 'C' : c.point === -1 ? 'R' : c.point === -2 ? 'T' : 'O', oppUid: String(me === 'B' ? c.whiteuid : c.blackuid), oppNick: me === 'B' ? c.whitenick : c.blacknick });
